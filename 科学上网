@@ -1,0 +1,122 @@
+受**封杀，ke xue上网的博文遭到屏蔽，先放在此处
+
+> 本文针对科学上网，进行详细的说明：从服务器购买，服务器优化，再到Shadowsocks的安装。让你每月仅需￥15，就可以使用，500G流量，不限带宽的外网服务。
+
+## 科学上网
+
+### 1 购买VPS
+
+```
+https://www.vultr.com/?ref=7267442
+```
+
+### 2 选择服务器地区：
+
+1 价格：
+
+截止今天： Miami和New york 还是有$2.5/M  的VPS的。 或者通过supprot咨询客服那个地区有低价的服务器。
+
+2 测速：
+
+```
+https://www.vultr.com/faq/#downloadspeedtests
+```
+
+通过这个地址，来选择服务器的下载速度。
+
+#### 注意项
+
+> 不要勾选ipv6 见下：否则会导致无法访问谷歌学术。经常出现“We're sorry... but your computer or network may be sending automated queries. To protect our users, we can't process your request right now.
+”
+
+![](http://source.wangxiaoyao.com/b0a2934cde2e0ed6965da54d43177935.png)
+
+### 3 优化服务器
+
+> 主要针对TCP进行优化。有两种方法见下。但是第二种方式没用，也并未深入了解。
+
+####  1 BBR脚本加速
+
+```
+1 wget --no-check-certificate https://github.com/teddysun/across/raw/master/bbr.sh
+
+2 chmod +x bbr.sh
+
+3 ./bbr.sh
+```
+
+```
+lsmod | grep bbr  # 检查安装是否成功
+```
+
+右键查看youtube的播放信息，明显增速了。而ping的结果不明显。
+
+测速结果见下图，速度达到了5m：
+
+![](http://source.wangxiaoyao.com/db58dcfb82ba7caf3dcacf750c3c9012.png)
+
+
+#### 2 锐速加速
+
+1 对内核的要求
+
+查看自己的主机：
+
+```
+cat /etc/issue  #查看内核
+uname -a          #查看内核版本
+```
+
+2 查看锐速支持的内核
+
+[锐速支持](https://raw.githubusercontent.com/0oVicero0/serverSpeeder_kernel/master/serverSpeeder.txt)
+
+
+3 去下载对应版本的内核：对应软件地址
+
+```
+1 http://ftp.scientificlinux.org/linux/scientific/
+
+2 site:centos.org kernel-2.6.32-220.el6.x86_64   你需要的内核(google)
+```
+
+案例：
+
+```
+CentOS/6.2/2.6.32-220.el6.x86_64/x64/3.9.10.33/serverspeeder_1484
+```
+
+如上： 系统/6.2 是版本/系统位数/
+
+- x86_64: 64位数
+- i386: 32位数
+
+4 是否成功
+
+```
+rpm -qa | grep kernel
+```
+
+5 安装锐速
+
+```
+wget --no-check-certificate -qO /tmp/appex.sh "https://raw.githubusercontent.com/0oVicero0/serverSpeeder_Install/master/appex.sh" && bash /tmp/appex.sh 'install'
+```
+
+### 4 安装ShadowSocks
+
+在VPS在中按照下面步骤即可。包括设置自己的密码，端口，密码类型。这些都需要填写在客户端的。
+
+```
+1 wget --no-check-certificate -O shadowsocks.sh https://raw.githubusercontent.com/teddysun/shadowsocks_install/master/shadowsocks.sh
+
+2 chmod +x shadowsocks.sh
+
+3 ./shadowsocks.sh 2>&1 | tee shadowsocks.log
+
+4 /etc/init.d/shadowsocks restart
+```
+
+
+
+
